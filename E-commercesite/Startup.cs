@@ -37,6 +37,7 @@ namespace E_commercesite
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContext<EcommerceContext>(options => options.UseSqlServer(Configuration.GetConnectionString("EcommerceContext")));
             services.Add(new ServiceDescriptor(typeof(SQLFunction), new SQLFunction(Configuration.GetConnectionString("EcommerceContext"))));
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,12 +56,17 @@ namespace E_commercesite
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseSession();
 
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+                routes.MapRoute(
+                    name: "cart",
+                    template: "{controller=Payment}/{action=Index}/{pr}"
+                    );
             });
         }
     }

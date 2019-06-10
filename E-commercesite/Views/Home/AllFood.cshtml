@@ -1,0 +1,122 @@
+﻿@model IEnumerable<E_commercesite.Models.Food>
+
+
+@{
+    ViewData["Title"] = "AllFood";
+}
+
+<h2>All Products</h2>
+
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<style>
+    .modal {
+        display:none;
+        position:fixed;
+        z-index:1;
+        padding-top:100px;
+        width:100%;
+        height:100%;
+        overflow:auto;
+        background-color:rgb(0,0,0);
+    }
+
+    .modal-content{
+        background-color:#fefefe;
+        margin:auto;
+        padding:20px;
+        width:50%;
+    }
+
+    .close {
+        color:gray;
+        float:right;
+        font-size:25px;
+    }
+
+
+    .close:hover,.close:focus{
+        color:black;
+        text-decoration:none;
+        cursor:pointer;
+    }
+
+
+</style>
+
+
+<div class="container" style="margin-top:50px;">
+
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="close">&times;</span>
+            <h4>Add To Order?</h4>
+            <h6 id="priceID"></h6>
+            <button id="addButton" onclick="processRequest()">Add To Cart</button>
+        </div>
+    </div>
+
+    <div class="row">
+
+
+        @foreach (var item in Model)
+        {
+            <div class="col-sm-4" style="margin-bottom:20px;" onclick="addToCart(@item.Price, @item.ID)">
+
+                <img src="data:image/jpg;base64,@item.ImageString" style="width:100px; height:100px" />
+                <p>@item.Name</p>
+                <p>$ @item.Price</p>
+            </div>
+        }
+    </div>
+
+
+</div>
+
+<script>
+    var price = document.getElementById("priceID");
+    var modal = document.getElementById("addModal");
+    var close = document.getElementById("close");
+
+    var id = "";
+
+
+    close.onclick = function () {
+        modal.style.display = "none";
+        console.log(id);
+    }
+    function addToCart(itemPrice, itemID) {
+        price.innerHTML = itemPrice;
+        id = itemID;
+
+        modal.style.display = "block";
+
+    }
+
+    function processRequest() {
+        $.ajax({
+            url: "UpdateCart?itemid=" + id,
+            data: Text,
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                if (data)
+                    modal.style.display = "none";
+                else
+                    alert("Please Login to Add");
+            },
+            error: function (e) {
+
+            }
+        });
+    }
+
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+
+
+</script>

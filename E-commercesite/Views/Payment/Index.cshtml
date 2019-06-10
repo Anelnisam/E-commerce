@@ -1,0 +1,41 @@
+﻿@model  E_commercesite.Models.CreditCard
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Total Charge: @ViewData["totalPrice"]</h2>
+
+<form asp-action="ChargeCard">
+
+    <div class="col-lg-10">
+        <div class="form-group">
+            <label asp-for="number">Number</label>
+            <input type="text" asp-for="number" class="form-control" />
+            <span asp-validation-for="number" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="expMonth">Exp Month</label>
+            <input type="number" asp-for="expMonth" class="form-control" />
+            <span asp-validation-for="expMonth" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="expYear">Exp Year</label>
+            <input type="number" asp-for="expYear" class="form-control" />
+            <span asp-validation-for="expYear" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="CCV">CCV</label>
+            <input type="text" asp-for="CCV" class="form-control" />
+            <span asp-validation-for="CCV" class="text-danger"></span>
+        </div>
+
+        <p class="text-danger">@ViewData["CardError"]</p>"
+        <input type="submit" value="Create" />
+
+    </div>
+
+</form>

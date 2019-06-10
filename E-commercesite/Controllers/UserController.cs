@@ -106,5 +106,25 @@ namespace E_commercesite.Controllers
             functions.InsertUser(user.username, user.password);
             return RedirectToAction("Index", "Home");
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult LoginUser ([Bind("username", "password")]User user)
+        {
+            if (ModelState["username"].Errors.Any() || ModelState["password"].Errors.Any())
+            {
+                return View("Login");
+            }
+
+            SQLFunction functions = HttpContext.RequestServices.GetService(typeof(SQLFunction)) as SQLFunction;
+            if (functions.CheckUser(user.username, user.password))
+            {
+                HttpContext.Session.SetString("Username", user.username);
+                return RedirectToAction("Index", "Home");
+            }
+
+            ViewData["Invalid"] = "Invalid Username/Password";
+            return View("Login");
+        }
     }
 }

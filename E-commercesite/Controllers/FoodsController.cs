@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using E_commercesite.Models;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace E_commercesite.Controllers
 {
@@ -53,15 +55,66 @@ namespace E_commercesite.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,Price")] Food food)
+        public async Task<IActionResult> Create([Bind("ID,Name,Price,Image")] Food food)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(food);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                byte[] fileBytes;
+                SQLFunction functions = HttpContext.RequestServices.GetService(typeof(SQLFunction)) as SQLFunction;
+                using (MemoryStream ms = new MemoryStream())
+                {
+  
+                    food.Image.CopyTo(ms);
+                    fileBytes = ms.ToArray();
+
+                }
+                functions.InsertFood(food.Name, food.Price, fileBytes);
+              _context.Add(food);
+              await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "Home");
             }
+
             return View(food);
+        }
+
+        public IActionResult PurchaseOrder()
+        {
+            if (String.IsNullOrEmpty(HttpContext.Session.GetString("Username")))
+            {
+                return RedirectToAction("Index", "User");
+            }
+            double totalPrice = Double.Parse(TempData["totalPrice"].ToString());
+
+
+            return RedirectToAction("Index", "Payment", totalPrice);
+        }
+
+        public IActionResult Cart()
+        {
+            String username = HttpContext.Session.GetString("Username");
+            if (!String.IsNullOrEmpty(username))
+            {
+                ViewData["Username"] = username;
+            }
+            SQLFunction functions = HttpContext.RequestServices.GetService(typeof(SQLFunction)) as SQLFunction;
+            String listString = functions.GetUserCart(username);
+
+            String[] listArray = listString.Split(",");
+
+            double totalPrice = 0.0;
+            List<Food> allFood = new List<Food>();
+            foreach (String s in listArray)
+            {
+               if (!String.IsNullOrEmpty(s))
+               {
+                    allFood.Add(functions.RetriveCart(s));
+                    //totalPrice += allFood.ElementAt(allFood.Count() - 1).Price;
+               }    
+            }
+            
+            TempData["totalPrice"] = totalPrice;
+
+            return View(allFood);
         }
 
         // GET: Foods/Edit/5

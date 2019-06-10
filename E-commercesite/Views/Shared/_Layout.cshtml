@@ -33,13 +33,26 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">E_commercesite</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Ecommerce site</a>
+                <a asp-area="" asp-controller="Home" asp-action="AllFood" class="navbar-brand">All Products</a>
+                <a asp-area="" asp-controller="Home" asp-action="About" class="navbar-brand">About us</a>
+                <a asp-area="" asp-controller="Home" asp-action="Contact" class="navbar-brand">Contact us</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav" style="float:right;">
-                    <li><a onclick="goToLogin()">Login</a></li>
-                    <li><a asp-action="SignUp" asp-controller="Home">Sign up</a></li>
-                    
+                    @if (ViewData["Username"] != null && !ViewData["Username"].Equals(""))
+                    {
+                        <li><a style="font-size:12px;" asp-action="ViewCart" asp-controller="Home">Welcome @ViewData["Username"]</a></li>
+                        <li><a asp-action="Logout" asp-controller="Home">Logout</a></li>
+                    }
+                    else
+                    {
+                        <li><a onclick="goToLogin()">Login</a></li>
+                        <li><a asp-action="SignUp" asp-controller="Home">Sign up</a></li>
+
+                    }
+
+
                 </ul>
             </div>
         </div>
