@@ -151,6 +151,7 @@ namespace E_commercesite.Models
                     {
                         String item = reader.GetString(3);
                         reader.Close();
+                        item.Substring(0, item.Length - 1);
                         return item;
                         
                     }

@@ -7,16 +7,15 @@
 <h2>Your Cart</h2>
 
 <div style="height:500px;">
-    <div class="col-sm-6" style="float:left">
+    <div class="col-sm-4" style="margin-bottom:20px;">
 
-        @foreach (var item in Model)
-        {
-            <div style="margin-bottom:20px;">
+         @foreach (var item in Model) { if (item != null) { <div style="margin-bottom:20px;">
 
                 <img src="data:image/jpg;base64,@item.ImageString" style="width:100px; height:100px" />
                 <p>@item.Name</p>
                 <p>$ @item.Price</p>
             </div>
+            }
         }
     </div>
     <div>
