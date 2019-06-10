@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using E_commercesite.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Stripe;
 
@@ -13,12 +14,18 @@ namespace E_commercesite.Controllers
     {
         public IActionResult Index(String pr)
         {
+            String username = HttpContext.Session.GetString("Username");
+            if (!String.IsNullOrEmpty(username))
+            {
+                ViewData["Username"] = username;
+            }
             ViewData["totalPrice"] = pr;
 
             return View();
         }
 
     public IActionResult ChargeCard([Bind("number", "expMonth", "expYear", "CCV")] CreditCard creditCard)
+
         {
             StripeConfiguration.SetApiKey("sk_test_LYk237i5xPRlstCABBIWqDsb00eWmKk85w");
 

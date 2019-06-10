@@ -61,7 +61,7 @@
 
         @foreach (var item in Model)
         {
-            <div class="col-sm-4" style="margin-bottom:20px;" onclick="addToCart(@item.Price, @item.ID)">
+            <div class="col-sm-4" style="margin-bottom:20px;" onclick="addToCart(parseFloat(@item.Price), @item.ID)">
 
                 <img src="data:image/jpg;base64,@item.ImageString" style="width:100px; height:100px" />
                 <p>@item.Name</p>
@@ -79,7 +79,6 @@
     var close = document.getElementById("close");
 
     var id = "";
-
 
     close.onclick = function () {
         modal.style.display = "none";

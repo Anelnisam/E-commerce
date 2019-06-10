@@ -79,6 +79,11 @@ namespace E_commercesite.Controllers
 
         public IActionResult PurchaseOrder()
         {
+            String username = HttpContext.Session.GetString("Username");
+            if (!String.IsNullOrEmpty(username))
+            {
+                ViewData["Username"] = username;
+            }
             if (String.IsNullOrEmpty(HttpContext.Session.GetString("Username")))
             {
                 return RedirectToAction("Index", "User");
