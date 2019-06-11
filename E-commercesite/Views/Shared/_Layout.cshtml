@@ -37,11 +37,13 @@
                 <a asp-area="" asp-controller="Home" asp-action="AllFood" class="navbar-brand">All Products</a>
                 <a asp-area="" asp-controller="Home" asp-action="About" class="navbar-brand">About us</a>
                 <a asp-area="" asp-controller="Home" asp-action="Contact" class="navbar-brand">Contact us</a>
+                
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav" style="float:right;">
                     @if (ViewData["Username"] != null && !ViewData["Username"].Equals(""))
                     {
+                        <a asp-area="" asp-controller="Foods" asp-action="Cart" class="navbar-brand">Cart</a>
                         <li><a style="font-size:12px;" asp-action="ViewCart" asp-controller="Home">Welcome @ViewData["Username"]</a></li>
                         <li><a asp-action="Logout" asp-controller="Home">Logout</a></li>
                     }
