@@ -112,9 +112,11 @@ namespace E_commercesite.Controllers
             {
                if (!String.IsNullOrEmpty(s))
                {
+
                     allFood.Add(functions.RetriveCart(s));
-                    //totalPrice += allFood.ElementAt(allFood.Count() - 1).Price;
-               }    
+                    totalPrice += allFood.ElementAt(allFood.Count() - 1).Price;
+               }   
+  
             }
             
             TempData["totalPrice"] = totalPrice;
